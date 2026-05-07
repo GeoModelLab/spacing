@@ -1,0 +1,74 @@
+# ============================================================
+# Spacing / CarbonFarming-IT — .gitignore
+# .NET 8 + Visual Studio + APSIM Next Generation
+# ============================================================
+
+# ------ Build output ----------------------------------------
+[Bb]in/
+[Oo]bj/
+out/
+publish/
+artifacts/
+
+# ------ Visual Studio ---------------------------------------
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+.vscode/
+*.pidb
+*.booproj
+*.svd
+
+# ------ .NET runtime / NuGet --------------------------------
+project.lock.json
+project.fragment.lock.json
+artifacts/
+packages/
+*.nupkg
+*.snupkg
+nuget.config   # se contiene credenziali private
+
+# ------ Secrets e configurazione locale ---------------------
+spacing.config.json          # usa spacing.config.example.json come template
+*.local.json
+appsettings.local.json
+*.secrets.json
+.env
+.env.*
+!.env.example
+
+# ------ Dati temporanei / output di simulazione -------------
+/tmp/
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# File di output APSIM (pesanti, generati da simulazione)
+*.apsimx.bak
+*.apsim.bak
+*.sim
+
+# ------ Log ------------------------------------------------
+*.log
+logs/
+
+# ------ OS -------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ------ File di lock ----------------------------------------
+*.lock
+FileLockRegistry.cs~
+
+# ------ Dati meteo locali (opzionale, decommentare se pesanti)
+# *.met
+
+# ------ Cartelle di calibrazione/run temporanee -------------
+/apsim/src/runner/data/temp/
+/apsim/src/runner/files/temp/

@@ -1,0 +1,132 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using APSIM.Core;
+using APSIM.Numerics;
+using APSIM.Shared.Utilities;
+using DocumentFormat.OpenXml.Office.CustomXsn;
+using Models.Core;
+using Models.Interfaces;
+using Models.Utilities;
+using Newtonsoft.Json;
+
+namespace Models.Soils
+{
+
+    /// <summary>A soil crop parameterization class.</summary>
+    [Serializable]
+    [ViewName("ApsimNG.Resources.Glade.ProfileView.glade")]
+    [PresenterName("UserInterface.Presenters.ProfilePresenter")]
+    [ValidParent(ParentType = typeof(Physical))]
+    public class SoilCrop : Model, IStructureDependency
+    {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
+
+        /// <summary>Depth strings (mm/mm)</summary>
+        [Display]
+        [Summary]
+        [Units("mm")]
+        public string[] Depth => (Parent as Physical).Depth;
+
+        /// <summary>Crop lower limit (mm/mm)</summary>
+        [Summary]
+        [Display(Format = "N3")]
+        [Units("mm/mm")]
+        public double[] LL { get; set; }
+
+        /// <summary>Crop lower limit (mm)</summary>
+        [Units("mm")]
+        public double[] LLmm
+        {
+            get
+            {
+                var soilPhysical = Structure.FindParent<IPhysical>(relativeTo: this, recurse: true);
+                if (soilPhysical == null)
+                    return null;
+                return MathUtilities.Multiply(LL, soilPhysical.Thickness);
+            }
+        }
+
+        /// <summary>The KL value.</summary>
+        [Summary]
+        [Units("/day")]
+        [Display(Format = "N3")]
+        public double[] KL { get; set; }
+
+        /// <summary>The exploration factor</summary>
+        [Summary]
+        [Units("0-1")]
+        [Display(Format = "N3")]
+        public double[] XF { get; set; }
+
+        /// <summary>The metadata for crop lower limit</summary>
+        public string[] LLMetadata { get; set; }
+
+        /// <summary>The metadata for KL</summary>
+        public string[] KLMetadata { get; set; }
+
+        /// <summary>The meta data for the exploration factor</summary>
+        public string[] XFMetadata { get; set; }
+
+        /// <summary>Return the plant available water CAPACITY at standard thickness.</summary>
+        [Units("mm/mm")]
+        public double[] PAWC
+        {
+            get
+            {
+                var soilPhysical = Structure.FindParent<IPhysical>(recurse: true);
+                if (soilPhysical == null)
+                    return null;
+                return SoilUtilities.CalcPAWC(soilPhysical.Thickness, LL, soilPhysical.DUL, XF);
+            }
+        }
+
+        /// <summary>Return the plant available water CAPACITY at standard thickness.</summary>
+        [Display(DisplayName = "PAWC", Format = "N1")]
+        [Units("mm")]
+        public double[] PAWCmm
+        {
+            get
+            {
+                var soilPhysical = Structure.FindParent<IPhysical>(recurse: true);
+                if (soilPhysical == null)
+                    return null;
+                return MathUtilities.Multiply(PAWC, soilPhysical.Thickness);
+            }
+        }
+
+        /// <summary>Return the plant available water (SW-CLL).</summary>
+        [Units("mm/mm")]
+        public double[] PAW
+        {
+            get
+            {
+                var soilPhysical = Structure.FindParent<IPhysical>(recurse: true);
+                if (soilPhysical == null)
+                    return null;
+                var water = Structure.Find<Water>();
+                if (water == null)
+                    return null;
+                return SoilUtilities.CalcPAWC(soilPhysical.Thickness, LL, water.Volumetric, XF);
+            }
+        }
+
+        /// <summary>Return the plant available water (SW-CLL) (mm).</summary>
+        [Units("mm")]
+        public double[] PAWmm
+        {
+            get
+            {
+                var soilPhysical = Structure.FindParent<IPhysical>(recurse: true);
+                if (soilPhysical == null)
+                    return null;
+
+                return MathUtilities.Multiply(PAW, soilPhysical.Thickness);
+            }
+        }
+    }
+}

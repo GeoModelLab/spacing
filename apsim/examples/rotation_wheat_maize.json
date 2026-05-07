@@ -1,0 +1,66 @@
+{
+  "_comment": "Rotazione biennale frumento-mais, non irrigata, fertilizzazione frazionata",
+  "id": "wheat_maize_dryland",
+  "name": "Frumento-Mais asciutto",
+  "cycles": 5,
+  "crops": [
+    {
+      "name": "Wheat",
+      "management": {
+        "tillage": "conventional",
+        "_comment_fert": "Frumento: 60 kg N alla semina + 60 kg N levata (DAS~100) + 40 kg N spigatura (DAS~160)",
+        "split_fertiliser": [
+          {
+            "trigger"        : "Sowing",
+            "amount_kg_n_ha" : 60.0,
+            "fert_type"      : "UreaN"
+          },
+          {
+            "trigger"          : "DaysAfterSowing",
+            "days_after_sowing": 100,
+            "amount_kg_n_ha"   : 60.0,
+            "fert_type"        : "UreaN"
+          },
+          {
+            "trigger"          : "DaysAfterSowing",
+            "days_after_sowing": 160,
+            "amount_kg_n_ha"   : 40.0,
+            "fert_type"        : "UreaN"
+          }
+        ],
+        "sowing_window_start": "1-oct",
+        "sowing_window_end"  : "30-nov",
+        "sowing_density"     : 350,
+        "row_spacing"        : 150,
+        "sowing_depth"       : 30,
+        "auto_irrigate"      : false
+      }
+    },
+    {
+      "name": "Maize",
+      "management": {
+        "tillage": "conventional",
+        "_comment_fert": "Mais: 80 kg N semina + 80 kg N copertura V6 (35 DAS)",
+        "split_fertiliser": [
+          {
+            "trigger"        : "Sowing",
+            "amount_kg_n_ha" : 80.0,
+            "fert_type"      : "UreaN"
+          },
+          {
+            "trigger"          : "DaysAfterSowing",
+            "days_after_sowing": 35,
+            "amount_kg_n_ha"   : 80.0,
+            "fert_type"        : "UreaN"
+          }
+        ],
+        "sowing_window_start": "1-apr",
+        "sowing_window_end"  : "1-jun",
+        "sowing_density"     : 8.5,
+        "row_spacing"        : 750,
+        "sowing_depth"       : 40,
+        "auto_irrigate"      : false
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "DbApiBaseUrl":    "http://localhost:8000/api/v1",
+  "DbApiKey":        "YOUR_API_KEY_HERE",
+  "TempWeatherDir":  "/tmp/spacing/weather",
+  "OutputDir":       "/tmp/spacing/output",
+  "StartYear":       1990,
+  "EndYear":         2023,
+  "MaxParallelism":  4
+}

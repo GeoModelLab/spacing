@@ -1,0 +1,23 @@
+{
+  "lat": 45.4,
+  "lon": 9.2,
+  "crops": [
+    {
+      "name": "Wheat",
+      "management": {
+        "tillage": "no-till",
+        "nitrogen_mineral": 80,
+        "nitrogen_organic": 20
+      }
+    },
+    {
+      "name": "Sorghum",
+      "management": {
+        "tillage": "no-till",
+        "nitrogen_mineral": 100
+      }
+    }
+  ],
+  "startYear": 2010,
+  "endYear": 2023
+}

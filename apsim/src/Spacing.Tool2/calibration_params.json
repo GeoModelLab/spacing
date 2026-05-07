@@ -1,0 +1,300 @@
+{
+  "_comment": [
+    "File di configurazione parametri di calibrazione per coltura.",
+    "",
+    "Struttura a 6 ruoli funzionali uniformi per tutte le colture:",
+    "  ue_biomass           — Radiation use efficiency  (g DM / MJ PAR intercepted)",
+    "  phenology_vegetative — TT o sensitivita' che controlla anticipo/ritardo fioritura",
+    "  phenology_reproductive — TT da fioritura a maturita' (durata granigione)",
+    "  leaf_expansion       — Fillocrono o parametro morfologico fogliare (controlla LAI)",
+    "  grain_number         — Driver numero granelli per pianta (o proxy sink-size)",
+    "  grain_size           — Peso massimo individuale granello (o HI potenziale per soia)",
+    "",
+    "I path APSIM differiscono per coltura per ragioni strutturali del modello,",
+    "ma il numero di parametri (6) e i ruoli sono identici per tutte e 5 le specie.",
+    "Il campo 'Role' e' puramente descrittivo e non viene letto dal calibratore.",
+    "",
+    "Name        : percorso APSIM nel cultivar (senza il prefisso '[SubModel].')",
+    "              Diventa '[SubModel].path.FixedValue = valore' negli override.",
+    "LowerBound  : limite inferiore",
+    "UpperBound  : limite superiore",
+    "InitialValue: punto di partenza ottimizzatore",
+    "",
+    "Riferimenti bibliografici:",
+    "  [Li2023]   Li et al. (2023) Field Crops Res. — SA APSIM-Wheat, 10 siti cinesi",
+    "  [Winn2023] Winn et al. (2023) Agric. Syst.   — SA APSIM-Maize, USA Corn Belt",
+    "  [Arch2014] Archontoulis et al. (2014) Agron. J. — APSIM-Soybean SA, Iowa",
+    "  [Mans2021] Mansouri et al. (2021) Field Crops Res. — SA APSIM-Barley, Iran",
+    "  [Hamm2010] Hammer et al. (2010) Crop Sci.    — APSIM-Sorghum fisiologia/SA"
+  ],
+
+  "Maize": {
+    "_refs": "Winn et al. (2023) Agric. Syst.",
+    "Parameters": [
+      {
+        "Role"        : "ue_biomass",
+        "Name"        : "Leaf.Photosynthesis.RUE.FixedValue",
+        "LowerBound"  : 1.2,
+        "UpperBound"  : 3.2,
+        "InitialValue": 2.0,
+        "Description" : "Radiation use efficiency (g DM/MJ PAR). Default B_110=2.0. Driver biomassa e LAI massimo. [Winn2023: top SA su biomassa]"
+      },
+      {
+        "Role"        : "phenology_vegetative",
+        "Name"        : "Phenology.Juvenile.Target.FixedValue",
+        "LowerBound"  : 100.0,
+        "UpperBound"  : 350.0,
+        "InitialValue": 210.0,
+        "Description" : "GDD fase giovanile (°Cd). Default B_110=210. Controlla anticipo/ritardo fioritura e set granelli. [Winn2023: top-3 SA per heading date]"
+      },
+      {
+        "Role"        : "phenology_reproductive",
+        "Name"        : "Phenology.GrainFilling.Target.FixedValue",
+        "LowerBound"  : 400.0,
+        "UpperBound"  : 950.0,
+        "InitialValue": 730.0,
+        "Description" : "GDD granigione (°Cd). Default B_110=730. Principale driver resa finale. [Winn2023: massima SA su yield]"
+      },
+      {
+        "Role"        : "leaf_expansion",
+        "Name"        : "Phenology.FlagLeafToFlowering.Target.FixedValue",
+        "LowerBound"  : 30.0,
+        "UpperBound"  : 100.0,
+        "InitialValue": 50.0,
+        "Description" : "GDD da foglia bandiera a fioritura (°Cd). Default=50. Controlla durata plateau LAI e set granelli. Proxy per espansione fogliare nella fase finale vegetativa. [Winn2023]"
+      },
+      {
+        "Role"        : "grain_number",
+        "Name"        : "Grain.MaximumGrainsPerCob.FixedValue",
+        "LowerBound"  : 400.0,
+        "UpperBound"  : 900.0,
+        "InitialValue": 700.0,
+        "Description" : "Numero massimo granelli per pannocchia. Default=700. Driver resa potenziale unitamente a grain_size. [Winn2023: secondo parametro per SA resa]"
+      },
+      {
+        "Role"        : "grain_size",
+        "Name"        : "Grain.MaximumPotentialGrainSize.FixedValue",
+        "LowerBound"  : 0.15,
+        "UpperBound"  : 0.45,
+        "InitialValue": 0.30,
+        "Description" : "Peso massimo potenziale del singolo granello (g). Default=0.30. Scala la resa unitamente al numero granelli. [Winn2023]"
+      }
+    ]
+  },
+
+  "Sorghum": {
+    "_refs": "Hammer et al. (2010) Crop Sci.",
+    "Parameters": [
+      {
+        "Role"        : "ue_biomass",
+        "Name"        : "Leaf.Photosynthesis.RUE.FixedValue",
+        "LowerBound"  : 0.8,
+        "UpperBound"  : 2.0,
+        "InitialValue": 1.25,
+        "Description" : "Radiation use efficiency (g DM/MJ PAR). Default Buster=1.25. [Hamm2010]"
+      },
+      {
+        "Role"        : "phenology_vegetative",
+        "Name"        : "Phenology.Juvenile.Target.FixedValue",
+        "LowerBound"  : 60.0,
+        "UpperBound"  : 250.0,
+        "InitialValue": 100.0,
+        "Description" : "GDD fase giovanile (°Cd). Default Buster=100. Anticipo fioritura. [Hamm2010]"
+      },
+      {
+        "Role"        : "phenology_reproductive",
+        "Name"        : "Phenology.TTFlowerToMaturity.FixedValue",
+        "LowerBound"  : 500.0,
+        "UpperBound"  : 1000.0,
+        "InitialValue": 761.0,
+        "Description" : "GDD da fioritura a maturita' (°Cd). Default=761. Principale driver resa e peso granello. [Hamm2010: massima SA su grain yield]"
+      },
+      {
+        "Role"        : "leaf_expansion",
+        "Name"        : "Leaf.Parameters.aX0.FixedValue",
+        "LowerBound"  : 0.3,
+        "UpperBound"  : 1.5,
+        "InitialValue": 0.687,
+        "Description" : "Intercetta curva area fogliare vs numero foglie. Default Buster=0.687. Driver picco LAI. [Hamm2010: parametro morfologico fogliare critico]"
+      },
+      {
+        "Role"        : "grain_number",
+        "Name"        : "Phenology.TTEndJuvToInit.FixedValue",
+        "LowerBound"  : 80.0,
+        "UpperBound"  : 300.0,
+        "InitialValue": 160.0,
+        "Description" : "GDD da fine fase giovanile a iniziazione pannocchia (°Cd). Default=160. PROXY grain_number: controlla durata periodo vegetativo e numero fiori formati. [Hamm2010: alta SA su grain number via sink-size]"
+      },
+      {
+        "Role"        : "grain_size",
+        "Name"        : "Grain.MaximumPotentialGrainSize.FixedValue",
+        "LowerBound"  : 0.020,
+        "UpperBound"  : 0.060,
+        "InitialValue": 0.035,
+        "Description" : "Peso massimo potenziale granello sorgo (g). Default~0.035. Scala la resa con il numero granelli. [Hamm2010]"
+      }
+    ]
+  },
+
+  "Wheat": {
+    "_refs": "Li et al. (2023) Field Crops Res.; Asseng et al. (2011) Glob. Change Biol.",
+    "Parameters": [
+      {
+        "Role"        : "ue_biomass",
+        "Name"        : "Leaf.Photosynthesis.RUE.FixedValue",
+        "LowerBound"  : 0.8,
+        "UpperBound"  : 2.5,
+        "InitialValue": 1.4,
+        "Description" : "Radiation use efficiency (g DM/MJ PAR). Default Hartog=1.4. [Li2023: top SA su grain yield e biomassa]"
+      },
+      {
+        "Role"        : "phenology_vegetative",
+        "Name"        : "Phenology.Vernalisation.VernalisationEffect.VernSaturation.FixedValue",
+        "LowerBound"  : 10.0,
+        "UpperBound"  : 50.0,
+        "InitialValue": 30.0,
+        "Description" : "Numero giorni efficaci per saturazione vernalizzazione. Default~30. Alta SA per date spigatura in ambienti freddi. [Li2023: primo SA index per heading date]"
+      },
+      {
+        "Role"        : "phenology_reproductive",
+        "Name"        : "Phenology.GrainFilling.Target.FixedValue",
+        "LowerBound"  : 350.0,
+        "UpperBound"  : 700.0,
+        "InitialValue": 540.0,
+        "Description" : "GDD granigione (°Cd). Default Hartog~540. Durata riempimento granello → resa. [Li2023]"
+      },
+      {
+        "Role"        : "leaf_expansion",
+        "Name"        : "Phenology.Phyllochron.BasePhyllochron.FixedValue",
+        "LowerBound"  : 80.0,
+        "UpperBound"  : 160.0,
+        "InitialValue": 120.0,
+        "Description" : "Fillocrono base (°Cd/foglia). Default Hartog=120. Controlla velocita' espansione LAI. [Li2023: top SA per LAI]"
+      },
+      {
+        "Role"        : "grain_number",
+        "Name"        : "Grain.NumberFunction.GrainNumber.GrainsPerGramOfStem.FixedValue",
+        "LowerBound"  : 15.0,
+        "UpperBound"  : 45.0,
+        "InitialValue": 26.0,
+        "Description" : "Numero granelli per grammo di stelo a fioritura (granelli/g). Default=26. Driver diretto grain number. [Li2023: alta SA su grain number e yield]"
+      },
+      {
+        "Role"        : "grain_size",
+        "Name"        : "Grain.MaximumPotentialGrainSize.FixedValue",
+        "LowerBound"  : 0.030,
+        "UpperBound"  : 0.070,
+        "InitialValue": 0.050,
+        "Description" : "Peso massimo potenziale granello frumento (g). Default=0.05. [Li2023]"
+      }
+    ]
+  },
+
+  "Barley": {
+    "_refs": "Mansouri et al. (2021) Field Crops Res.",
+    "Parameters": [
+      {
+        "Role"        : "ue_biomass",
+        "Name"        : "Leaf.Photosynthesis.RUE.FixedValue",
+        "LowerBound"  : 0.8,
+        "UpperBound"  : 2.0,
+        "InitialValue": 1.3,
+        "Description" : "Radiation use efficiency (g DM/MJ PAR). Default orzo=1.3. [Mans2021]"
+      },
+      {
+        "Role"        : "phenology_vegetative",
+        "Name"        : "Phenology.PpSensitivity.FixedValue",
+        "LowerBound"  : 1.0,
+        "UpperBound"  : 6.0,
+        "InitialValue": 3.0,
+        "Description" : "Sensitivita' fotoperiodica (h/h). Default~3. Controlla data spigatura al variare del fotoperiodo. [Mans2021: top SA per heading date in latitudini alte]"
+      },
+      {
+        "Role"        : "phenology_reproductive",
+        "Name"        : "Phenology.GrainFilling.Target.FixedValue",
+        "LowerBound"  : 350.0,
+        "UpperBound"  : 700.0,
+        "InitialValue": 540.0,
+        "Description" : "GDD granigione (°Cd). Default=540. Principale driver resa e peso granello. [Mans2021: massima SA su yield]"
+      },
+      {
+        "Role"        : "leaf_expansion",
+        "Name"        : "Structure.Phyllochron.BasePhyllochron.FixedValue",
+        "LowerBound"  : 30.0,
+        "UpperBound"  : 70.0,
+        "InitialValue": 50.0,
+        "Description" : "Fillocrono base orzo (°Cd/foglia). Default=50. Governa tasso espansione LAI e copertura canopy. [Mans2021: top SA per LAI e biomassa]"
+      },
+      {
+        "Role"        : "grain_number",
+        "Name"        : "Grain.NumberFunction.GrainNumber.GrainsPerGramOfStem.FixedValue",
+        "LowerBound"  : 20.0,
+        "UpperBound"  : 50.0,
+        "InitialValue": 35.0,
+        "Description" : "Granelli per grammo di stelo (granelli/g). Default=35. Driver diretto grain number. [Mans2021: alta SA su grain number]"
+      },
+      {
+        "Role"        : "grain_size",
+        "Name"        : "Grain.MaximumPotentialGrainSize.FixedValue",
+        "LowerBound"  : 0.030,
+        "UpperBound"  : 0.070,
+        "InitialValue": 0.050,
+        "Description" : "Peso massimo potenziale granello orzo (g). Default=0.05. [Mans2021]"
+      }
+    ]
+  },
+
+  "Soybean": {
+    "_refs": "Archontoulis et al. (2014) Agron. J.",
+    "Parameters": [
+      {
+        "Role"        : "ue_biomass",
+        "Name"        : "Leaf.Photosynthesis.RUE.FixedValue",
+        "LowerBound"  : 0.5,
+        "UpperBound"  : 1.8,
+        "InitialValue": 1.0,
+        "Description" : "Radiation use efficiency (g DM/MJ PAR). Default soia=1.0. [Arch2014]"
+      },
+      {
+        "Role"        : "phenology_vegetative",
+        "Name"        : "Phenology.Vegetative.Target.FixedValue",
+        "LowerBound"  : 100.0,
+        "UpperBound"  : 350.0,
+        "InitialValue": 200.0,
+        "Description" : "GDD fase vegetativa (°Cd). Default~200. Driver principale data fioritura e LAI massimo. [Arch2014: top SA per R1 flowering date]"
+      },
+      {
+        "Role"        : "phenology_reproductive",
+        "Name"        : "Phenology.GrainFilling.Target.FixedValue",
+        "LowerBound"  : 150.0,
+        "UpperBound"  : 500.0,
+        "InitialValue": 300.0,
+        "Description" : "GDD fase di granigione (°Cd). Default~300. Durata riempimento baccelli → resa. [Arch2014]"
+      },
+      {
+        "Role"        : "leaf_expansion",
+        "Name"        : "Leaf.Phyllochron.FixedValue",
+        "LowerBound"  : 30.0,
+        "UpperBound"  : 60.0,
+        "InitialValue": 45.0,
+        "Description" : "Fillocrono soia (°Cd/foglia). Default=45. Controlla tasso espansione LAI. [Arch2014: alta SA per LAI]"
+      },
+      {
+        "Role"        : "grain_number",
+        "Name"        : "Leaf.AreaLargestLeaf.FixedValue",
+        "LowerBound"  : 0.003,
+        "UpperBound"  : 0.012,
+        "InitialValue": 0.006,
+        "Description" : "Area della foglia piu' grande (m2). Default=0.006. PROXY grain_number: in soia il set baccelli e' funzione della copertura canopy a fioritura; area fogliare max e' il driver morfologico del LAI potenziale. [Arch2014: top SA per peak LAI e pod set]"
+      },
+      {
+        "Role"        : "grain_size",
+        "Name"        : "Grain.PotentialHarvestIndex.FixedValue",
+        "LowerBound"  : 0.30,
+        "UpperBound"  : 0.60,
+        "InitialValue": 0.50,
+        "Description" : "Harvest index potenziale (adimensionale). Default=0.50. In soia sostituisce il grain_size dei cereali: controlla partizione biomassa → granella. [Arch2014: massima SA per grain yield in ambienti umidi]"
+      }
+    ]
+  }
+}

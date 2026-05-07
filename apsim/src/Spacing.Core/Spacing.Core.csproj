@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Spacing.Core</RootNamespace>
+    <AssemblyName>Spacing.Core</AssemblyName>
+  </PropertyGroup>
+
+  <!-- Riferimenti ai progetti APSIM Next Generation -->
+  <!-- Path relativo: src/Spacing.Core/ -> ../../../../ = root ApsimNG -->
+  <!-- Quando spacing sara' un repo separato con ApsimNG come submodule, -->
+  <!-- il path diventera' ../../apsimng/Models/Models.csproj ecc. -->
+  <ItemGroup>
+    <ProjectReference Include="../optimizer/optimizerSimplex.csproj" />
+    <ProjectReference Include="..\..\apsim source\APSIM.Core\APSIM.Core.csproj" />
+    <ProjectReference Include="..\..\apsim source\APSIM.Shared\APSIM.Shared.csproj" />
+    <ProjectReference Include="..\..\apsim source\Models\Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>

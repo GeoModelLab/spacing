@@ -1,0 +1,45 @@
+{
+  "_comment": "Esempio rotazione mais irrigato Pianura Padana con fertilizzazione frazionata",
+  "id": "maize_irrigated_po_valley",
+  "name": "Mais irrigato (Pianura Padana)",
+  "cycles": 5,
+  "crops": [
+    {
+      "name": "Maize",
+      "management": {
+        "tillage": "conventional",
+
+        "_comment_fert": "Fertilizzazione frazionata: 80 kg N alla semina + 80 kg N a 35 DAS (V6)",
+        "split_fertiliser": [
+          {
+            "trigger"         : "Sowing",
+            "amount_kg_n_ha"  : 80.0,
+            "fert_type"       : "UreaN"
+          },
+          {
+            "trigger"          : "DaysAfterSowing",
+            "days_after_sowing": 35,
+            "amount_kg_n_ha"   : 80.0,
+            "fert_type"        : "UreaN"
+          }
+        ],
+
+        "_comment_sowing": "Finestra semina mais: 20 aprile - 10 giugno (posticipata per mais tardivo)",
+        "sowing_window_start": "20-apr",
+        "sowing_window_end"  : "10-jun",
+        "sowing_density"     : 8.5,
+        "row_spacing"        : 750,
+        "sowing_depth"       : 40,
+        "cultivar"           : null,
+
+        "_comment_irrig": "Irrigazione a soglia: intervieni quando PAW/PAWC < 50%, ricarica all'85%",
+        "auto_irrigate"           : true,
+        "irrigation_threshold"    : 0.50,
+        "irrigation_target"       : 0.85,
+        "max_irrigation_mm"       : 40.0,
+        "irrigation_window_start" : "1-may",
+        "irrigation_window_end"   : "30-sep"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "met-file-sorghum": {
+      "commandName": "Project",
+      "commandLineArgs": "--mock --met-file C:\\progetti\\ApsimNG\\Prototypes\\Spacing\\TR_3745_2825_2020.met --start-year 2020 --end-year 2023 --lat 37.45 --lon 28.25 --rotation Sorghum"
+    },
+    "mock-sorghum": {
+      "commandName": "Project",
+      "commandLineArgs": "--mock --rotation Sorghum"
+    },
+    "mock-sorghum-calibrate": {
+      "commandName": "Project",
+      "commandLineArgs": "--mock --calibrate --rotation Sorghum"
+    },
+    "mock-wheat-sorghum": {
+      "commandName": "Project",
+      "commandLineArgs": "--mock --rotation Wheat,Sorghum"
+    }
+  }
+}
